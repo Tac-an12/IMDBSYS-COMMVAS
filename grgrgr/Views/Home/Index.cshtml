@@ -3,10 +3,7 @@
     var userName = ViewBag.UserName as string;
     var userRole = ViewBag.UserRole as string;
     var welcomeMessage = userRole == "User" ? $"{userName}<br/><span style='font-size: 20px; font-weight: bold;'>User</span>" : $"{userName}<br/><span style='font-size: 20px;'>Admin</span>";
-
-
 }
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,45 +17,6 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="HomeCss/assets/css/style.css">
-</head>
-
-<body>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#" style="color: black;">Ecommerce</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav" style="width: 100%;">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" style="color: black;">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="@Url.Action("Products", "Home")" style="color: black;">Products</a>
-                </li>
-                @if (!string.IsNullOrEmpty(userName))
-            {
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Home/AddProduct" style="color: black;">Add Product</a>
-                    </li>
-                }
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="color: black;">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" style="color: black;">Contact</a>
-                </li>
-                @if (!string.IsNullOrEmpty(userName))
-            {
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Logout", "Home")" style="color: black;">Logout</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </nav>
 
     <style>
         /* Hover effect for navbar items */
@@ -83,8 +41,58 @@
             align-items: center;
             height: 100%;
             font-weight: bold; /* Add bold font weight */
+            font-family: Lato, Helvetica, sans-serif, 'Arial Narrow Bold'; /* Set font family */
         }
     </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-secondary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="font-family: Arial, sans-serif;">CommVas</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            Home
+                            <span class="visually-hidden">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-sm-2" type="search" placeholder="Search">
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+
+
 
     <!-- Banner Section -->
     <section class="banner">
@@ -99,55 +107,55 @@
         </div>
     </section>
 
-
-
-
     <!-- recent-products section -->
     <section class="recent-products">
         <div class="container">
             <h2>All Added Products</h2>
             <div class="row">
                 @if (ViewBag.AllProducts != null && ViewBag.AllProducts.Count > 0)
-            {
-                foreach (var product in ViewBag.AllProducts)
                 {
-                    <div class="col-md-4">
-                        <div class="card">
-                            @if (product.product_img != null && product.product_img.Length > 0)
-                            {
-                                <img src="data:image/png;base64,@Convert.ToBase64String(product.product_img)" class="card-img-top" alt="@product.name" style="height: 200px; object-fit: cover;">
-                            }
-                            else
-                            {
-                                <img src="#" class="card-img-top" alt="No Image Available" style="height: 200px; object-fit: cover;">
-                            }
-
-                            <div class="card-body">
-                                <h5 class="card-title">@product.name</h5>
-                                <p class="card-text">$@product.price</p>
-                                <a href="#" class="btn btn-primary" style="background-color: blue;">View Details</a>
+                    foreach (var product in ViewBag.AllProducts)
+                    {
+                        <div class="col-md-4">
+                            <div class="card" data-product-id="@product.product_id">
+                                <!-- Add data-product-id attribute -->
+                                <!-- Product image and other details -->
+                                <img src="@(product.product_img != null && product.product_img.Length > 0 ? $"data:image/png;base64,{Convert.ToBase64String(product.product_img)}" : "#")" class="card-img-top" alt="@product.name" style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.name</h5>
+                                    <p class="card-text">$@product.price</p>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-primary view-details-btn" data-toggle="modal" data-target="#productDetailsModal" data-product-id="@product.product_id">
+                                        View Details
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
-                }
-                else
-                {
-                    <div class="col-md-12">
-                        <p>No products added yet.</p>
-                    </div>
+                    }
                 }
             </div>
         </div>
     </section>
 
-
-
-
-    <!-- Footer Section -->
-    <footer class="bg-light text-center py-4">
-        <p>&copy; 2024 Ecommerce Store. All Rights Reserved.</p>
-    </footer>
+    <!-- Modal -->
+    <div class="modal fade" id="productDetailsModal" tabindex="-1" role="dialog" aria-labelledby="productDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productDetailsModalLabel">Product Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="productDetailsModalBody">
+                    <!-- Product details will be loaded here -->
+                    <h4>Title: <span id="productTitle"></span></h4>
+                    <p>Description: <span id="productDescription">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam efficitur vehicula lorem, sit amet consectetur felis fermentum in. Nulla facilisi. Nullam maximus leo nec ligula dignissim, nec ultricies lorem faucibus.</span></p>
+                    <p>Price: <span id="productPrice">$19.99</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
