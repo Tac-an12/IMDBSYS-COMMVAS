@@ -1,0 +1,158 @@
+﻿@{
+    ViewBag.Title = "Home";
+    var userName = ViewBag.UserName as string;
+    var userRole = ViewBag.UserRole as string;
+    var welcomeMessage = userRole == "User" ? $"{userName}<br/><span style='font-size: 20px; font-weight: bold;'>User</span>" : $"{userName}<br/><span style='font-size: 20px;'>Admin</span>";
+
+
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="HomeCss/assets/css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#" style="color: black;">Ecommerce</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav" style="width: 100%;">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" style="color: black;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Products", "Home")" style="color: black;">Products</a>
+                </li>
+                @if (!string.IsNullOrEmpty(userName))
+            {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/AddProduct" style="color: black;">Add Product</a>
+                    </li>
+                }
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color: black;">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color: black;">Contact</a>
+                </li>
+                @if (!string.IsNullOrEmpty(userName))
+            {
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Logout", "Home")" style="color: black;">Logout</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <style>
+        /* Hover effect for navbar items */
+        .navbar-nav .nav-item .nav-link:hover {
+            color: black; /* Change text color to black on hover */
+            text-decoration: underline; /* Add underline on hover */
+        }
+
+        /* Font size and alignment for navbar links */
+        .navbar-nav .nav-item .nav-link {
+            font-size: 15px; /* Set font size to 18px */
+            line-height: 50px; /* Set line height to vertically align text */
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .navbar-brand {
+            font-size: 30px;
+            line-height: 50px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            font-weight: bold; /* Add bold font weight */
+        }
+    </style>
+
+    <!-- Banner Section -->
+    <section class="banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>@Html.Raw(welcomeMessage)</h1> <!-- Use Html.Raw to render welcomeMessage as raw HTML -->
+                    <p>Shop the latest trends in fashion, arts, and more!</p>
+                    <a href="#" class="btn btn-primary" style="background-color: blue;">Shop Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- recent-products section -->
+    <section class="recent-products">
+        <div class="container">
+            <h2>All Added Products</h2>
+            <div class="row">
+                @if (ViewBag.AllProducts != null && ViewBag.AllProducts.Count > 0)
+            {
+                foreach (var product in ViewBag.AllProducts)
+                {
+                    <div class="col-md-4">
+                        <div class="card">
+                            @if (product.product_img != null && product.product_img.Length > 0)
+                            {
+                                <img src="data:image/png;base64,@Convert.ToBase64String(product.product_img)" class="card-img-top" alt="@product.name" style="height: 200px; object-fit: cover;">
+                            }
+                            else
+                            {
+                                <img src="#" class="card-img-top" alt="No Image Available" style="height: 200px; object-fit: cover;">
+                            }
+
+                            <div class="card-body">
+                                <h5 class="card-title">@product.name</h5>
+                                <p class="card-text">$@product.price</p>
+                                <a href="#" class="btn btn-primary" style="background-color: blue;">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <p>No products added yet.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Footer Section -->
+    <footer class="bg-light text-center py-4">
+        <p>&copy; 2024 Ecommerce Store. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
